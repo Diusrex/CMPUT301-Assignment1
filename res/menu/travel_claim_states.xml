@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/submit" android:title="@string/submit"></item>
+    <item android:id="@+id/returned" android:title="@string/returned"></item>
+    <item android:id="@+id/approved" android:title="@string/approved"></item>
+    
+
+</menu>
