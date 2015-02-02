@@ -107,9 +107,18 @@ public class TravelClaim extends FModel<FView> {
         }
     }
 
+    public void createExpense() {
+        allExpenses.add(new TravelExpense());
+        updated();
+    }
+
     // They will be sorted by date
     public ArrayList<TravelExpense> getAllExpenses() {
         return allExpenses;
+    }
+
+    public int getExpensePosition(TravelExpense expense) {
+        return allExpenses.indexOf(expense);
     }
 
     public void deleteExpense(TravelExpense expense) {

@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,11 +43,13 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     private Button startDateButton;
     private Button endDateButton;
 
+    private Button createExpenseButton;
+
     private TravelExpenseArrayAdapter expenseAdapter;
 
     private Menu menu;
 
-    private TextWatcher descriptionTextWather = new TextWatcher() {
+    private TextWatcher descriptionTextWatcher = new TextWatcher() {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -68,7 +71,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_travel_claim);
 
-        setUpLayout();
+        findLayoutItems();
 
         setUpClaimToDisplay();
     }
@@ -80,19 +83,27 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         controller.addView(this);
     }
 
-    private void setUpLayout() {
-        setUpButtons();
-        setUpTextBoxes();
+    private void findLayoutItems() {
+        findButtons();
+        findTextBoxes();
         setUpDescriptionTextBox();
         setUpExpensesList();
     }
 
-    private void setUpButtons() {
-        startDateButton = (Button) findViewById(R.id.change_start_date);
-        endDateButton = (Button) findViewById(R.id.change_end_date);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        controller.requestUpdate();
     }
 
-    private void setUpTextBoxes() {
+    private void findButtons() {
+        startDateButton = (Button) findViewById(R.id.change_start_date);
+        endDateButton = (Button) findViewById(R.id.change_end_date);
+        createExpenseButton = (Button) findViewById(R.id.new_expense);
+    }
+
+    private void findTextBoxes() {
         currentStatus = (TextView) findViewById(R.id.current_status);
         startDateText = (TextView) findViewById(R.id.start_date_text);
         endDateText = (TextView) findViewById(R.id.end_date_text);
@@ -101,7 +112,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     private void setUpDescriptionTextBox() {
         description = (EditText) findViewById(R.id.description);
 
-        description.addTextChangedListener(descriptionTextWather);
+        description.addTextChangedListener(descriptionTextWatcher);
 
         // Save it so that it can be restored later
         description.setTag(description.getKeyListener());
@@ -139,6 +150,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         description.setKeyListener((KeyListener) description.getTag());
         startDateButton.setEnabled(true);
         endDateButton.setEnabled(true);
+        createExpenseButton.setEnabled(true);
         expenseAdapter.setEditable(true);
     }
 
@@ -146,6 +158,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         description.setKeyListener(null);
         startDateButton.setEnabled(false);
         endDateButton.setEnabled(false);
+        createExpenseButton.setEnabled(false);
         expenseAdapter.setEditable(false);
     }
 
@@ -188,6 +201,9 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     }
 
     private void updateStatesMenuBar(TravelClaim model) {
+        if (menu == null)
+            return;
+
         boolean shouldShowSubmit = model.isValidStateChange(TravelClaim.State.SUBMITTED);
         menu.findItem(R.id.submit).setVisible(shouldShowSubmit);
 
@@ -259,9 +275,28 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
 
     }
 
-    @Override
-    public void editExpense(TravelExpense expensen) {
-        // TODO Auto-generated method stub
+    public void createExpense(View v) {
+        int newExpensePos = controller.getNumberOfExpenses();
+        controller.createExpense();
 
+        displayExpense(newExpensePos);
+    }
+
+    @Override
+    public void editExpense(TravelExpense expense) {
+        int expensePosition = controller.getExpensePosition(expense);
+
+        displayExpense(expensePosition);
+    }
+
+    private void displayExpense(int expensePosition) {
+        int claimPosition = getIntent().getIntExtra(ARGUMENT_CLAIM_POSITION, 0);
+
+        Intent intent = new Intent(this, TravelExpenseActivity.class);
+
+        intent.putExtra(TravelExpenseActivity.ARGUMENT_CLAIM_POSITION, claimPosition);
+        intent.putExtra(TravelExpenseActivity.ARGUMENT_EXPENSE_POSITION, expensePosition);
+
+        startActivity(intent);
     }
 }

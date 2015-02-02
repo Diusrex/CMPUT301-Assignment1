@@ -42,16 +42,30 @@ public class TravelClaimController {
 
     public void setState(State state) {
         claim.setState(state);
-        
+
+    }
+
+    public int getNumberOfExpenses() {
+        return claim.getAllExpenses().size();
+
+    }
+
+    public void createExpense() {
+        claim.createExpense();
     }
 
     public void deleteExpense(TravelExpense expense) {
         claim.deleteExpense(expense);
-        
+
     }
 
     public ArrayList<Pair<String, Float>> getCurrencyInformation() {
         return claim.getCurrencyInformation();
-        
+
     }
+
+    public int getExpensePosition(TravelExpense expense) {
+        return claim.getExpensePosition(expense);
+    }
+
 }
