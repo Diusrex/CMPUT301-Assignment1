@@ -14,7 +14,7 @@ public class TravelClaim extends FModel<FView> {
     private String description;
     private List<TravelExpense> allExpenses;
 
-    private TravelClaimState currentState;
+    private TravelClaimStates currentState;
 
     public TravelClaim() {
         name = "";
@@ -22,7 +22,7 @@ public class TravelClaim extends FModel<FView> {
         endDate = new GregorianCalendar();
         description = "";
         allExpenses = new ArrayList<TravelExpense>();
-        currentState = TravelClaimState.IN_PROGRESS;
+        currentState = TravelClaimStates.IN_PROGRESS;
     }
 
     public String getName() {
@@ -80,11 +80,11 @@ public class TravelClaim extends FModel<FView> {
         }
     }
 
-    public TravelClaimState getState() {
+    public TravelClaimStates getState() {
         return currentState;
     }
 
-    public void setState(TravelClaimState newState) {
+    public void setState(TravelClaimStates newState) {
         if (isValidStateChange(newState)) {
             currentState = newState;
 
@@ -93,15 +93,15 @@ public class TravelClaim extends FModel<FView> {
         }
     }
 
-    public boolean isValidStateChange(TravelClaimState newState) {
+    public boolean isValidStateChange(TravelClaimStates newState) {
         switch (currentState) {
         case IN_PROGRESS:
             // Should fall through
         case RETURNED:
-            return newState == TravelClaimState.SUBMITTED;
+            return newState == TravelClaimStates.SUBMITTED;
 
         case SUBMITTED:
-            return newState == TravelClaimState.APPROVED || newState == TravelClaimState.RETURNED;
+            return newState == TravelClaimStates.APPROVED || newState == TravelClaimStates.RETURNED;
 
         default:
             return false;
@@ -109,7 +109,7 @@ public class TravelClaim extends FModel<FView> {
     }
 
     public boolean mayBeEdited() {
-        return (currentState == TravelClaimState.IN_PROGRESS || currentState == TravelClaimState.RETURNED);
+        return (currentState == TravelClaimStates.IN_PROGRESS || currentState == TravelClaimStates.RETURNED);
     }
 
     public void createExpense() {

@@ -15,11 +15,12 @@ import android.widget.TextView;
 import com.example.assignment1.R;
 
 public class DisplayCurrencyUsageInfoDialogFragment extends DialogFragment {
-    // Will be two different Lists. The element at i in one is related to the element at i in the other.
+    // Will be two different Lists. The element at i in one is related to the
+    // element at i in the other.
     // There will not be duplicate currencies in
     private static final String ALL_CURRENCIES = "AllCurrencies";
     private static final String ALL_AMOUNTS = "AllAmounts";
-    
+
     // Will not merge the given payments at all
     public static DisplayCurrencyUsageInfoDialogFragment newInstance(List<Pair<String, Float>> mergedPayments) {
         DisplayCurrencyUsageInfoDialogFragment f = new DisplayCurrencyUsageInfoDialogFragment();
@@ -28,12 +29,12 @@ public class DisplayCurrencyUsageInfoDialogFragment extends DialogFragment {
 
         String[] currencyNames = new String[mergedPayments.size()];
         float[] currencyValues = new float[mergedPayments.size()];
-        
+
         for (int i = 0; i < mergedPayments.size(); ++i) {
             currencyNames[i] = mergedPayments.get(i).first;
             currencyValues[i] = mergedPayments.get(i).second;
         }
-        
+
         args.putStringArray(ALL_CURRENCIES, currencyNames);
         args.putFloatArray(ALL_AMOUNTS, currencyValues);
 
@@ -48,7 +49,7 @@ public class DisplayCurrencyUsageInfoDialogFragment extends DialogFragment {
 
         ScrollView scrollLeftView = (ScrollView) view.findViewById(R.id.currency_scroll_left);
         ScrollView scrollRightView = (ScrollView) view.findViewById(R.id.currency_scroll_right);
-        
+
         String[] currencyNames = getArguments().getStringArray(ALL_CURRENCIES);
         float[] currencyValues = getArguments().getFloatArray(ALL_AMOUNTS);
 
@@ -56,10 +57,10 @@ public class DisplayCurrencyUsageInfoDialogFragment extends DialogFragment {
             View v = inflater.inflate(R.layout.row_currency, null);
             TextView tv = (TextView) v.findViewById(R.id.currency);
             tv.setText(currencyNames[i]);
-            
+
             tv = (TextView) v.findViewById(R.id.value);
             tv.setText(String.format("%.2f", currencyValues[i]));
-            
+
             if (i % 2 == 0) {
                 scrollLeftView.addView(v);
             } else {

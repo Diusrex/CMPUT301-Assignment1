@@ -45,22 +45,6 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
     private Spinner categorySpinner;
     private ArrayAdapter<TravelExpense.Category> categoryAdapter;
 
-    private TextWatcher descriptionTextWatcher = new TextWatcher() {
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            controller.setDescription(s.toString());
-        }
-    };
-
     // http://stackoverflow.com/a/13716269/2648858 Feb 1, 2015
     public class CurrencyFormatInputFilter implements InputFilter {
 
@@ -124,7 +108,20 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
         dateText = (TextView) findViewById(R.id.date_text);
 
         description = (EditText) findViewById(R.id.description);
-        description.addTextChangedListener(descriptionTextWatcher);
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                controller.setDescription(s.toString());
+            }
+        });
 
         amount = (EditText) findViewById(R.id.amount);
         amount.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });

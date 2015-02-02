@@ -42,7 +42,7 @@ public class TravelClaimController {
         claim.setEndDate(newEndDate);
     }
 
-    public void setState(TravelClaimState newState) {
+    public void setState(TravelClaimStates newState) {
         claim.setState(newState);
     }
 

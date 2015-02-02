@@ -1,11 +1,11 @@
 package com.example.assignment1;
 
-enum TravelClaimState {
+enum TravelClaimStates {
     IN_PROGRESS("In Progress"), SUBMITTED("Submitted"), RETURNED("Returned"), APPROVED("Approved");
 
     private String str;
 
-    TravelClaimState(String str) {
+    TravelClaimStates(String str) {
         this.str = str;
     }
 

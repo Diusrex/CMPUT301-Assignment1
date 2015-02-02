@@ -236,13 +236,13 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         if (menu == null)
             return;
 
-        boolean shouldShowSubmit = model.isValidStateChange(TravelClaimState.SUBMITTED);
+        boolean shouldShowSubmit = model.isValidStateChange(TravelClaimStates.SUBMITTED);
         menu.findItem(R.id.submit).setVisible(shouldShowSubmit);
 
-        boolean shouldShowReturned = model.isValidStateChange(TravelClaimState.RETURNED);
+        boolean shouldShowReturned = model.isValidStateChange(TravelClaimStates.RETURNED);
         menu.findItem(R.id.returned).setVisible(shouldShowReturned);
 
-        boolean shouldShowApproved = model.isValidStateChange(TravelClaimState.APPROVED);
+        boolean shouldShowApproved = model.isValidStateChange(TravelClaimStates.APPROVED);
         menu.findItem(R.id.approved).setVisible(shouldShowApproved);
     }
 
@@ -281,13 +281,13 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         // Handle presses on the action bar items
         switch (item.getItemId()) {
         case R.id.submit:
-            controller.setState(TravelClaimState.SUBMITTED);
+            controller.setState(TravelClaimStates.SUBMITTED);
             return true;
         case R.id.returned:
-            controller.setState(TravelClaimState.RETURNED);
+            controller.setState(TravelClaimStates.RETURNED);
             return true;
         case R.id.approved:
-            controller.setState(TravelClaimState.APPROVED);
+            controller.setState(TravelClaimStates.APPROVED);
             return true;
         default:
             return super.onOptionsItemSelected(item);

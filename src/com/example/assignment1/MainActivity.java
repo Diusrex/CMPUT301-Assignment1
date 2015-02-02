@@ -31,7 +31,6 @@ public class MainActivity extends Activity implements TravelClaimArrayAdapterLis
     protected void onResume() {
         super.onResume();
         
-        
         updateClaimsList();
     }
 
