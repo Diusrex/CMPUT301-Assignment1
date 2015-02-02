@@ -81,7 +81,6 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
     }
 
     private TextWatcher floatTextWatcher = new TextWatcher() {
-
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
         }
@@ -144,14 +143,20 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
         List<Currency> allCurrencies = CurrencyHandler.getAllCurrencies();
 
         currencyAdapter = new ArrayAdapter<Currency>(this, android.R.layout.simple_spinner_item, allCurrencies);
-
         currencySpinner.setAdapter(currencyAdapter);
         currencySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            boolean hasIgnoredFirst = false;
 
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Currency selected = currencyAdapter.getItem(position);
-                controller.currencySelected(selected);
+                // This way, it will not acknowledge the first time it is
+                // selected
+                if (hasIgnoredFirst) {
+                    Currency selected = currencyAdapter.getItem(position);
+                    controller.currencySelected(selected);
+                } else {
+                    hasIgnoredFirst = true;
+                }
             }
 
             @Override
@@ -167,11 +172,18 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
 
         categorySpinner.setAdapter(categoryAdapter);
         categorySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            boolean hasIgnoredFirst = false;
 
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Category selected = categoryAdapter.getItem(position);
-                controller.categroySelected(selected);
+                // This way, it will not acknowledge the first time it is
+                // selected
+                if (hasIgnoredFirst) {
+                    Category selected = categoryAdapter.getItem(position);
+                    controller.categroySelected(selected);
+                } else {
+                    hasIgnoredFirst = true;
+                }
             }
 
             @Override
@@ -231,7 +243,8 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
     }
 
     private void updateSpinners(TravelExpense model) {
-        int currencyPos = currencyAdapter.getPosition(model.getCurrency());
+        // Use CurrencyHandler because Currency.equals is just ==
+        int currencyPos = CurrencyHandler.getCurrencyPos(model.getCurrency());
         currencySpinner.setSelection(currencyPos);
 
         int categoryPos = categoryAdapter.getPosition(model.getCategory());
