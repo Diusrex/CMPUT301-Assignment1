@@ -26,6 +26,12 @@ public class TravelClaimOwner {
         return new TravelClaimController(getClaim(claimPosition));
     }
 
+    public TravelExpenseController getTravelExpenseController(int claimPosition, int expensePosition) {
+        TravelClaim claim = allClaims.get(claimPosition);
+        TravelExpense expense = claim.getAllExpenses().get(expensePosition);
+        return new TravelExpenseController(expense);
+    }
+
     public void createNewClaim() {
         allClaims.add(new TravelClaim());
         dataHasBeenUpdated();
@@ -47,4 +53,5 @@ public class TravelClaimOwner {
     public int getClaimPosition(TravelClaim claim) {
         return allClaims.indexOf(claim);
     }
+
 }
