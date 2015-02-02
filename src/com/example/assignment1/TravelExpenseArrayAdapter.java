@@ -37,12 +37,10 @@ public class TravelExpenseArrayAdapter extends ArrayAdapter<TravelExpense> {
     }
 
     public void setAllExpenses(List<TravelExpense> allExpenses) {
-        if (this.allExpenses == null) {
-            super.addAll(allExpenses);
-            this.allExpenses = allExpenses;
-        } else {
-            notifyDataSetChanged();
-        }
+        // Not the best way to do it, but it works
+        super.clear();
+        super.addAll(allExpenses);
+        this.allExpenses = allExpenses;
     }
 
     @Override
