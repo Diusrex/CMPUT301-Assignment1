@@ -1,36 +1,67 @@
 package com.example.assignment1;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
-
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements TravelClaimArrayAdapterListener {
+    TravelClaimOwner claimsOwner;
+    
+    private TravelClaimArrayAdapter claimAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        claimsOwner = TravelApplication.getMainOwner();
+        setUpClaimsList();
     }
 
+    private void setUpClaimsList() {
+        claimAdapter = new TravelClaimArrayAdapter(this, this);
+        ListView list = (ListView) findViewById(R.id.claims_list);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        list.setAdapter(claimAdapter);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    protected void onResume() {
+        super.onResume();
+        
+        
+        updateClaimsList();
+    }
+
+    private void updateClaimsList() {
+        claimAdapter.setAllClaims(claimsOwner.getAllClaimsClone());
+    }
+
+    public void newClaim(View v) {
+        int newClaimPos = claimsOwner.getNumberClaims();
+
+        claimsOwner.createNewClaim();
+
+        displayTravelClaim(newClaimPos);
+    }
+
+    @Override
+    public void deleteClaim(TravelClaim claim) {
+        claimsOwner.deleteClaim(claim);
+        updateClaimsList();
+    }
+
+    @Override
+    public void editClaim(TravelClaim claim) {
+        int position = claimsOwner.getClaimPosition(claim);
+        displayTravelClaim(position);
+    }
+
+    private void displayTravelClaim(int pos) {
+        Intent intent = new Intent(this, TravelClaimActivity.class);
+        intent.putExtra(TravelClaimActivity.ARGUMENT_CLAIM_POSITION, pos);
+        startActivity(intent);
     }
 }

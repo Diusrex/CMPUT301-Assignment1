@@ -2,6 +2,8 @@ package com.example.assignment1;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 
 import android.util.Pair;
@@ -105,11 +107,9 @@ public class TravelClaim extends FModel<FView> {
         }
     }
 
-    // Gives no promise about their order
-    // Duplicates the actual ArrayList, but gives the actual items
-    @SuppressWarnings("unchecked")
+    // They will be sorted by date
     public ArrayList<TravelExpense> getAllExpenses() {
-        return (ArrayList<TravelExpense>) allExpenses.clone();
+        return allExpenses;
     }
 
     public void deleteExpense(int position) {
@@ -138,7 +138,7 @@ public class TravelClaim extends FModel<FView> {
     }
 
     public ArrayList<Pair<String, Float>> getCurrencyInformation() {
-        ArrayList<Pair<String, Float>> allPayments = new ArrayList<Pair<String,Float>>();
+        ArrayList<Pair<String, Float>> allPayments = new ArrayList<Pair<String, Float>>();
         for (TravelExpense expense : allExpenses) {
             allPayments.add(new Pair<String, Float>(expense.getCurrency().getCurrencyCode(), expense.getAmount()));
         }

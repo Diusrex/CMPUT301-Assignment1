@@ -8,9 +8,23 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.assignment1.MainActivity" >
 
-    <TextView
+    <ListView
+        android:id="@+id/claims_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/spacing_between_expences"
+        android:layout_marginTop="@dimen/spacing_between_expences"
+        android:dividerHeight="@dimen/spacing_between_expences" />
+
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="newClaim"
+        android:text="@string/new_claim" />
 
 </RelativeLayout>
