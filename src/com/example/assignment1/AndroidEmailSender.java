@@ -34,20 +34,7 @@ public class AndroidEmailSender extends EmailSender {
         String subject = "";
         String message = createMessage(claim);
 
-        Intent sendTo = new Intent(Intent.ACTION_SENDTO);
-        String uriText = "mailto:" + Uri.encode(toEmail) + "?subject=" + Uri.encode(subject) + "&body="
-                + Uri.encode(message);
-        Uri uri = Uri.parse(uriText);
-        sendTo.setData(uri);
-
-        List<ResolveInfo> resolveInfos = activity.getPackageManager().queryIntentActivities(sendTo, 0);
-
-        // Emulators may not like this check...
-        if (!resolveInfos.isEmpty()) {
-            return sendTo;
-        }
-
-        // Nothing resolves send to, so fallback to send...
+        // Emulators do not like ACTION_SENDTO, so just defaulting to ACTION_SEND
         Intent send = new Intent(Intent.ACTION_SEND);
 
         send.setType("text/plain");
@@ -57,5 +44,4 @@ public class AndroidEmailSender extends EmailSender {
 
         return Intent.createChooser(send, "Send mail...");
     }
-
 }
