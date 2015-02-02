@@ -1,9 +1,10 @@
 package com.example.assignment1;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,6 +27,8 @@ public class TravelExpenseArrayAdapter extends ArrayAdapter<TravelExpense> {
     static class TravelExpenseViewHolder {
         TextView currencyAndAmount;
         TextView description;
+        TextView date;
+        TextView category;
         Button editButton;
         Button deleteButton;
     }
@@ -37,6 +40,13 @@ public class TravelExpenseArrayAdapter extends ArrayAdapter<TravelExpense> {
     }
 
     public void setAllExpenses(List<TravelExpense> allExpenses) {
+        // Need to sort them by ascending date
+        Collections.sort(allExpenses, new Comparator<TravelExpense>() {
+            public int compare(TravelExpense arg0, TravelExpense arg1) {
+                return arg0.getDate().compareTo(arg1.getDate());
+            }
+        });
+
         // Not the best way to do it, but it works
         super.clear();
         super.addAll(allExpenses);
@@ -54,21 +64,27 @@ public class TravelExpenseArrayAdapter extends ArrayAdapter<TravelExpense> {
 
             holder = new TravelExpenseViewHolder();
             holder.description = (TextView) convertView.findViewById(R.id.description);
-            holder.editButton = (Button) convertView.findViewById(R.id.edit_button);
             holder.currencyAndAmount = (TextView) convertView.findViewById(R.id.currency_and_amount);
+            holder.date = (TextView) convertView.findViewById(R.id.date);
+            holder.category = (TextView) convertView.findViewById(R.id.category);
+            holder.editButton = (Button) convertView.findViewById(R.id.edit_button);
             holder.deleteButton = (Button) convertView.findViewById(R.id.delete_button);
 
             convertView.setTag(holder);
         } else {
             holder = (TravelExpenseViewHolder) convertView.getTag();
         }
+
         TravelExpense currentExpense = allExpenses.get(position);
 
         holder.description.setText(currentExpense.getDescription());
         String currencyText = Float.toString(currentExpense.getAmount()) + " "
                 + currentExpense.getCurrency().getCurrencyCode();
         holder.currencyAndAmount.setText(currencyText);
+        
+        holder.category.setText(currentExpense.getCategory().toString());
 
+        holder.date.setText(Utilities.getFormattedDateString(context, R.string.date, currentExpense.getDate()));
         if (isEditable) {
             setButtonEditing(position, holder);
         } else {

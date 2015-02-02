@@ -105,8 +105,11 @@ public class TravelClaim extends FModel<FView> {
         }
     }
 
+    // Gives no promise about their order
+    // Duplicates the actual ArrayList, but gives the actual items
+    @SuppressWarnings("unchecked")
     public ArrayList<TravelExpense> getAllExpenses() {
-        return allExpenses;
+        return (ArrayList<TravelExpense>) allExpenses.clone();
     }
 
     public void deleteExpense(int position) {

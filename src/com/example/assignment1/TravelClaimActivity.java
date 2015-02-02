@@ -156,16 +156,11 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     }
 
     private void updateDates(TravelClaim model) {
-        startDateText.setText(getFormattedDateString(R.string.start_date, model.getStartDate()));
+        startDateText.setText(Utilities.getFormattedDateString(this, R.string.start_date, model.getStartDate()));
         startDateButton.setOnClickListener(new DateButtonClickListener(model.getStartDate(), START_DATE_ID));
 
-        endDateText.setText(getFormattedDateString(R.string.end_date, model.getEndDate()));
+        endDateText.setText(Utilities.getFormattedDateString(this, R.string.end_date, model.getEndDate()));
         endDateButton.setOnClickListener(new DateButtonClickListener(model.getEndDate(), END_DATE_ID));
-    }
-
-    private String getFormattedDateString(int stringId, Calendar date) {
-        String dateOutput = DateFormat.getDateInstance().format(date.getTime());
-        return getResources().getString(stringId, dateOutput);
     }
 
     private class DateButtonClickListener implements OnClickListener {
@@ -254,7 +249,8 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
 
     public void displayCurrency(View v) {
         ArrayList<Pair<String, Float>> mergedPayments = controller.getCurrencyInformation();
-        DisplayCurrencyUsageInfoDialogFragment dialogFragment = DisplayCurrencyUsageInfoDialogFragment.newInstance(mergedPayments);
+        DisplayCurrencyUsageInfoDialogFragment dialogFragment = DisplayCurrencyUsageInfoDialogFragment
+                .newInstance(mergedPayments);
         displayDialogFragment(dialogFragment);
     }
 

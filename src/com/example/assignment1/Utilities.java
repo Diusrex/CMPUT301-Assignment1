@@ -1,9 +1,12 @@
 package com.example.assignment1;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 
+import android.content.Context;
 import android.util.Pair;
 
 public final class Utilities {
@@ -46,5 +49,10 @@ public final class Utilities {
                 return arg0.first.compareTo(arg1.first);
             }
         });
+    }
+    
+    public static String getFormattedDateString(Context context, int stringId, Calendar date) {
+        String dateOutput = DateFormat.getDateInstance().format(date.getTime());
+        return context.getResources().getString(stringId, dateOutput);
     }
 }
