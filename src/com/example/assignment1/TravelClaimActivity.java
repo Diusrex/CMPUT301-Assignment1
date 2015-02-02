@@ -1,6 +1,7 @@
 package com.example.assignment1;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
@@ -8,7 +9,8 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.text.method.KeyListener;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,13 +18,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.assignment1.dialogs.ChangeDateDialogFragment;
 import com.example.assignment1.dialogs.ChangeDateListener;
+import com.example.assignment1.dialogs.DisplayCurrencyUsageInfoDialogFragment;
 
 // Will be responsible for displaying a TravelClaim
-public class TravelClaimActivity extends Activity implements FView<TravelClaim>, ChangeDateListener {
+public class TravelClaimActivity extends Activity implements FView<TravelClaim>, ChangeDateListener,
+        TravelExpenseArrayAdapterListener {
     private static final int START_DATE_ID = 0;
     private static final int END_DATE_ID = 1;
     public static final String ARGUMENT_CLAIM_POSITION = "ClaimPosition";
@@ -37,21 +42,19 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     TextView endDateText;
     Button startDateButton;
     Button endDateButton;
-    
+
+    TravelExpenseArrayAdapter expenseAdapter;
+
     Menu menu;
 
     TextWatcher descriptionTextWather = new TextWatcher() {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            // TODO Auto-generated method stub
-
         }
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            // TODO Auto-generated method stub
-
         }
 
         @Override
@@ -82,6 +85,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         setUpButtons();
         setUpTextBoxes();
         setUpDescriptionTextBox();
+        setUpExpensesList();
     }
 
     private void setUpButtons() {
@@ -99,6 +103,16 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         description = (EditText) findViewById(R.id.description);
 
         description.addTextChangedListener(descriptionTextWather);
+
+        // Save it so that it can be restored later
+        description.setTag(description.getKeyListener());
+    }
+
+    private void setUpExpensesList() {
+        expenseAdapter = new TravelExpenseArrayAdapter(this, this);
+        ListView list = (ListView) findViewById(R.id.expense_list);
+
+        list.setAdapter(expenseAdapter);
     }
 
     @Override
@@ -108,18 +122,32 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        
-    }
-
-    @Override
     public void update(TravelClaim model) {
+        if (model.mayBeEdited()) {
+            enableEditing();
+        } else {
+            disableEditing();
+        }
+
         updateStatus(model);
         updateDates(model);
         updateDescription(model);
         updateStatesMenuBar(model);
+        updateTravelExpenseList(model);
+    }
+
+    private void enableEditing() {
+        description.setKeyListener((KeyListener) description.getTag());
+        startDateButton.setEnabled(true);
+        endDateButton.setEnabled(true);
+        expenseAdapter.setEditable(true);
+    }
+
+    private void disableEditing() {
+        description.setKeyListener(null);
+        startDateButton.setEnabled(false);
+        endDateButton.setEnabled(false);
+        expenseAdapter.setEditable(false);
     }
 
     private void updateStatus(TravelClaim model) {
@@ -133,6 +161,11 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
 
         endDateText.setText(getFormattedDateString(R.string.end_date, model.getEndDate()));
         endDateButton.setOnClickListener(new DateButtonClickListener(model.getEndDate(), END_DATE_ID));
+    }
+
+    private String getFormattedDateString(int stringId, Calendar date) {
+        String dateOutput = DateFormat.getDateInstance().format(date.getTime());
+        return getResources().getString(stringId, dateOutput);
     }
 
     private class DateButtonClickListener implements OnClickListener {
@@ -157,22 +190,22 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         if (!newText.equals(description.getText().toString())) {
             description.setText(model.getDescription());
         }
+
     }
 
     private void updateStatesMenuBar(TravelClaim model) {
         boolean shouldShowSubmit = model.isValidStateChange(TravelClaim.State.SUBMITTED);
         menu.findItem(R.id.submit).setVisible(shouldShowSubmit);
-        
+
         boolean shouldShowReturned = model.isValidStateChange(TravelClaim.State.RETURNED);
         menu.findItem(R.id.returned).setVisible(shouldShowReturned);
-        
+
         boolean shouldShowApproved = model.isValidStateChange(TravelClaim.State.APPROVED);
         menu.findItem(R.id.approved).setVisible(shouldShowApproved);
     }
 
-    private String getFormattedDateString(int stringId, Calendar date) {
-        String dateOutput = DateFormat.getDateInstance().format(date.getTime());
-        return getResources().getString(stringId, dateOutput);
+    private void updateTravelExpenseList(TravelClaim model) {
+        expenseAdapter.setAllExpenses(model.getAllExpenses());
     }
 
     @Override
@@ -188,12 +221,13 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         fragment.show(getFragmentManager(), "dialogfragment");
     }
 
-    // These two functions are for allowing the user to change the state of the program
+    // These two functions are for allowing the user to change the state of the
+    // program
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.travel_claim_states, menu);
-        
+
         this.menu = menu;
 
         controller.requestUpdate();
@@ -202,20 +236,37 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.w("TravelClaimActivity", "Value: " + item.getItemId() + " others: " + R.id.submit + " " + R.id.returned + " " + R.id.approved);
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.submit:
-                controller.setState(TravelClaim.State.SUBMITTED);
-                return true;
-            case R.id.returned:
-                controller.setState(TravelClaim.State.RETURNED);
-                return true;
-            case R.id.approved:
-                controller.setState(TravelClaim.State.APPROVED);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        case R.id.submit:
+            controller.setState(TravelClaim.State.SUBMITTED);
+            return true;
+        case R.id.returned:
+            controller.setState(TravelClaim.State.RETURNED);
+            return true;
+        case R.id.approved:
+            controller.setState(TravelClaim.State.APPROVED);
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void displayCurrency(View v) {
+        ArrayList<Pair<String, Float>> mergedPayments = controller.getCurrencyInformation();
+        DisplayCurrencyUsageInfoDialogFragment dialogFragment = DisplayCurrencyUsageInfoDialogFragment.newInstance(mergedPayments);
+        displayDialogFragment(dialogFragment);
+    }
+
+    @Override
+    public void deleteExpense(int position) {
+        controller.deleteExpense(position);
+
+    }
+
+    @Override
+    public void editExpense(int position) {
+        // TODO Auto-generated method stub
+
     }
 }

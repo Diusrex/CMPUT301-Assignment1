@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textMultiLine" >
-    </EditText>
+        android:hint="@string/claim_description"
+        android:inputType="textMultiLine" />
 
     <TextView
         android:id="@+id/current_status"
@@ -49,6 +49,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp" >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="displayCurrency"
+            android:text="@string/display_currency" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/darker_gray"
         android:orientation="horizontal"
         android:paddingLeft="5dp" >
@@ -69,5 +81,13 @@
             android:layout_height="wrap_content"
             android:text="@string/change" />
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/expense_list"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_between_expences"
+        android:layout_marginTop="@dimen/spacing_between_expences"
+        android:dividerHeight="@dimen/spacing_between_expences" />
 
 </LinearLayout>

@@ -1,6 +1,9 @@
 package com.example.assignment1;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import android.util.Pair;
 
 import com.example.assignment1.TravelClaim.State;
 
@@ -39,6 +42,16 @@ public class TravelClaimController {
 
     public void setState(State state) {
         claim.setState(state);
+        
+    }
+
+    public void deleteExpense(int position) {
+        claim.deleteExpense(position);
+        
+    }
+
+    public ArrayList<Pair<String, Float>> getCurrencyInformation() {
+        return claim.getCurrencyInformation();
         
     }
 }
