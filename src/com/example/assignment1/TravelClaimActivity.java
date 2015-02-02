@@ -1,6 +1,5 @@
 package com.example.assignment1;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -43,11 +42,11 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     private Button startDateButton;
     private Button endDateButton;
 
-    TravelExpenseArrayAdapter expenseAdapter;
+    private TravelExpenseArrayAdapter expenseAdapter;
 
-    Menu menu;
+    private Menu menu;
 
-    TextWatcher descriptionTextWather = new TextWatcher() {
+    private TextWatcher descriptionTextWather = new TextWatcher() {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
