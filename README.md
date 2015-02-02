@@ -18,6 +18,7 @@ CMPUT301 Assignment1
 
 This is my app for the first assignment. I have two separate UML diagrams: one shows just the 'core' of the my application, while the other includes all of the classes.
 
+Example video is available at https://www.youtube.com/watch?v=32IZkxX5ES8
 All code that I found from others has the link at the beginning of the block.
 
 In particular, the MVC design I have was inspired by the one at https://eclass.srv.ualberta.ca/pluginfile.php/1889146/mod_resource/content/2/03.1-Android-MVC.4up.pdf, on Feb 1 2015
