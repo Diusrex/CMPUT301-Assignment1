@@ -15,6 +15,8 @@
  **/
 package com.example.assignment1;
 
+// This interface is from https://eclass.srv.ualberta.ca/pluginfile.php/1889146/mod_resource/content/2/03.1-Android-MVC.4up.pdf
+// Feb 1 2015
 public interface FView<M> {
     public void update(M model);
 }

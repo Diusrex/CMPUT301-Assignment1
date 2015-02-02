@@ -18,6 +18,8 @@ package com.example.assignment1;
 import java.util.ArrayList;
 import java.util.List;
 
+// This class is from https://eclass.srv.ualberta.ca/pluginfile.php/1889146/mod_resource/content/2/03.1-Android-MVC.4up.pdf
+// Feb 1 2015
 @SuppressWarnings("rawtypes")
 public class FModel<V extends FView> {
     private transient List<V> views;
