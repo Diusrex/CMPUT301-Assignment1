@@ -34,14 +34,14 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
 
     private TravelClaimController controller;
 
-    TextView currentStatus;
+    private TextView currentStatus;
 
-    EditText description;
+    private EditText description;
 
-    TextView startDateText;
-    TextView endDateText;
-    Button startDateButton;
-    Button endDateButton;
+    private TextView startDateText;
+    private TextView endDateText;
+    private Button startDateButton;
+    private Button endDateButton;
 
     TravelExpenseArrayAdapter expenseAdapter;
 
