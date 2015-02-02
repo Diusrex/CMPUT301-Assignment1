@@ -15,17 +15,17 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-public class AndroidSaver implements SaverAndLoader {
+public class AndroidPersistence implements PersistenceHandler {
     private static final String SAVE_FILE = "save_file";
     private Context context;
 
-    public AndroidSaver(Context context) {
+    public AndroidPersistence(Context context) {
         this.context = context;
     }
 
     // All of the code in this class is based on what we discussed in Lab 3 of
     // CMPUT 301
-    public ArrayList<TravelClaim> loadAllTravelClaims() {
+    public List<TravelClaim> loadAllTravelClaims() {
         Gson gson = new Gson();
         try {
             FileInputStream fis = context.openFileInput(SAVE_FILE);
@@ -35,7 +35,7 @@ public class AndroidSaver implements SaverAndLoader {
             }.getType();
 
             InputStreamReader isr = new InputStreamReader(fis);
-            ArrayList<TravelClaim> travelClaims = gson.fromJson(isr, listType);
+            List<TravelClaim> travelClaims = gson.fromJson(isr, listType);
             if (travelClaims == null) {
                 travelClaims = new ArrayList<TravelClaim>();
             }
@@ -52,7 +52,7 @@ public class AndroidSaver implements SaverAndLoader {
         return new ArrayList<TravelClaim>();
     }
 
-    public void saveAllTravelClaims(ArrayList<TravelClaim> allClaims) {
+    public void saveAllTravelClaims(List<TravelClaim> allClaims) {
         Gson gson = new Gson();
 
         try {

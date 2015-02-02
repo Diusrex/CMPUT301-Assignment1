@@ -1,15 +1,12 @@
 package com.example.assignment1;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class TravelClaimOwner {
-    SaverAndLoader saverAndLoader;
-    private ArrayList<TravelClaim> allClaims;
+    PersistenceHandler saverAndLoader;
+    private List<TravelClaim> allClaims;
 
-    TravelClaimOwner(SaverAndLoader saverAndLoader) {
+    TravelClaimOwner(PersistenceHandler saverAndLoader) {
         this.saverAndLoader = saverAndLoader;
         allClaims = saverAndLoader.loadAllTravelClaims();
     }

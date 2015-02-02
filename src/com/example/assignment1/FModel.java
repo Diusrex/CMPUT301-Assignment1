@@ -1,10 +1,11 @@
 package com.example.assignment1;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class FModel<V extends FView> {
-    private transient ArrayList<V> views;
+    private transient List<V> views;
 
     public FModel() {
         views = new ArrayList<V>();

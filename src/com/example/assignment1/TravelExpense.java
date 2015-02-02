@@ -91,7 +91,6 @@ public class TravelExpense extends FModel<FView> {
             currency = newCurrency;
             updated();
         }
-
     }
 
     private void updated() {

@@ -61,6 +61,11 @@ public final class Utilities {
         String dateOutput = DateFormat.getDateInstance().format(date.getTime());
         return context.getResources().getString(stringId, dateOutput);
     }
+    
+    public static String getFormattedDateString(String str, Calendar date) {
+        String dateValue = DateFormat.getDateInstance().format(date.getTime());
+        return String.format(str, dateValue);
+    }
 
     public static boolean floatsAreDifferent(float f1, float f2) {
         return (Math.abs(f1 - f2) > epsilon);

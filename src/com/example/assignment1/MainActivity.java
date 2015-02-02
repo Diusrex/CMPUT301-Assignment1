@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 
 public class MainActivity extends Activity implements TravelClaimArrayAdapterListener {
-    TravelClaimOwner claimsOwner;
+    private TravelClaimOwner claimsOwner;
     
     private TravelClaimArrayAdapter claimAdapter;
 

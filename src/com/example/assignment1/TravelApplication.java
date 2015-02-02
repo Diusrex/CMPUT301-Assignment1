@@ -15,7 +15,7 @@ public class TravelApplication extends Application {
 
     public static TravelClaimOwner getMainOwner() {
         if (owner == null) {
-            SaverAndLoader saverLoader = new AndroidSaver(context);
+            PersistenceHandler saverLoader = new AndroidPersistence(context);
             owner = new TravelClaimOwner(saverLoader);
         }
 

@@ -1,6 +1,6 @@
 package com.example.assignment1.dialogs;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
@@ -21,7 +21,7 @@ public class DisplayCurrencyUsageInfoDialogFragment extends DialogFragment {
     private static final String ALL_AMOUNTS = "AllAmounts";
     
     // Will not merge the given payments at all
-    public static DisplayCurrencyUsageInfoDialogFragment newInstance(ArrayList<Pair<String, Float>> mergedPayments) {
+    public static DisplayCurrencyUsageInfoDialogFragment newInstance(List<Pair<String, Float>> mergedPayments) {
         DisplayCurrencyUsageInfoDialogFragment f = new DisplayCurrencyUsageInfoDialogFragment();
 
         Bundle args = new Bundle();
