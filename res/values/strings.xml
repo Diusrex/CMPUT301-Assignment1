@@ -14,4 +14,5 @@
     <string name="claim_description">Claim Description</string>
     <string name="display_currency">Display Currencies</string>
     <string name="currencies">Currencies</string>
+    <string name="date">%s</string>
 </resources>
