@@ -18,4 +18,6 @@ CMPUT301 Assignment1
 
 This is my app for the first assignment.
 
-All code that I found from others has the link at the beginning of the block
+All code that I found from others has the link at the beginning of the block.
+
+In particular, the MVC design I have was inspired by the one at https://eclass.srv.ualberta.ca/pluginfile.php/1889146/mod_resource/content/2/03.1-Android-MVC.4up.pdf, on Feb 1 2015
