@@ -2,14 +2,15 @@ package com.example.assignment1;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class TravelClaimOwner {
     SaverAndLoader saverAndLoader;
     private ArrayList<TravelClaim> allClaims;
     
     TravelClaimOwner(SaverAndLoader saverAndLoader) {
         this.saverAndLoader = saverAndLoader;
-        allClaims = new ArrayList<TravelClaim>();//saverAndLoader.loadAllTravelClaims();
-        allClaims.add(new TravelClaim());
+        allClaims = saverAndLoader.loadAllTravelClaims();
     }
 
     public TravelClaim getClaim(int claimPosition) {
