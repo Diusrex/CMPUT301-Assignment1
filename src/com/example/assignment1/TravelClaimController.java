@@ -1,11 +1,9 @@
 package com.example.assignment1;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.util.Pair;
-
-import com.example.assignment1.TravelClaim.State;
 
 public class TravelClaimController {
     // Don't even need to store the position of the claim, because this stores a
@@ -14,18 +12,6 @@ public class TravelClaimController {
 
     public TravelClaimController(TravelClaim claim) {
         this.claim = claim;
-    }
-
-    public void setDescription(String description) {
-        claim.setDescription(description);
-    }
-
-    public void setStartDate(Calendar startDate) {
-        claim.setStartDate(startDate);
-    }
-
-    public void setEndDate(Calendar endDate) {
-        claim.setEndDate(endDate);
     }
 
     public void addView(FView<TravelClaim> view) {
@@ -40,14 +26,28 @@ public class TravelClaimController {
         claim.deleteView(view);
     }
 
-    public void setState(State state) {
-        claim.setState(state);
+    public void setName(String newName) {
+        claim.setName(newName);
+    }
 
+    public void setDescription(String newDescription) {
+        claim.setDescription(newDescription);
+    }
+
+    public void setStartDate(Calendar newStartDate) {
+        claim.setStartDate(newStartDate);
+    }
+
+    public void setEndDate(Calendar newEndDate) {
+        claim.setEndDate(newEndDate);
+    }
+
+    public void setState(TravelClaimState newState) {
+        claim.setState(newState);
     }
 
     public int getNumberOfExpenses() {
         return claim.getAllExpenses().size();
-
     }
 
     public void createExpense() {
@@ -56,12 +56,10 @@ public class TravelClaimController {
 
     public void deleteExpense(TravelExpense expense) {
         claim.deleteExpense(expense);
-
     }
 
-    public ArrayList<Pair<String, Float>> getCurrencyInformation() {
+    public List<Pair<String, Float>> getCurrencyInformation() {
         return claim.getCurrencyInformation();
-
     }
 
     public int getExpensePosition(TravelExpense expense) {

@@ -2,42 +2,39 @@ package com.example.assignment1;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import android.util.Pair;
 
+@SuppressWarnings("rawtypes")
 public class TravelClaim extends FModel<FView> {
+    private String name;
     private Calendar startDate, endDate;
     private String description;
-    private ArrayList<TravelExpense> allExpenses;
+    private List<TravelExpense> allExpenses;
 
-    private State currentState;
-
-    static enum State {
-        IN_PROGRESS("In Progress"), SUBMITTED("Submitted"), RETURNED("Returned"), APPROVED("Approved");
-
-        private String str;
-
-        State(String str) {
-            this.str = str;
-        }
-
-        @Override
-        public String toString() {
-            return str;
-        }
-    }
+    private TravelClaimState currentState;
 
     public TravelClaim() {
+        name = "";
         startDate = new GregorianCalendar();
         endDate = new GregorianCalendar();
         description = "";
         allExpenses = new ArrayList<TravelExpense>();
-        currentState = State.IN_PROGRESS;
+        currentState = TravelClaimState.IN_PROGRESS;
     }
 
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String newName) {
+        if (!name.equals(newName) && mayBeEdited()) {
+            name = newName;
+            updated();
+        }
+    }
     public String getDescription() {
         return description;
     }
@@ -49,21 +46,21 @@ public class TravelClaim extends FModel<FView> {
         }
     }
 
-    public void setStartDate(Calendar newDate) {
-        if (!startDate.equals(newDate) && mayBeEdited()) {
+    public Calendar getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Calendar newStartDate) {
+        if (!startDate.equals(newStartDate) && mayBeEdited()) {
 
             // Not possible for end date to be less than start date
-            if (calLessThan(endDate, newDate)) {
+            if (Utilities.calLessThan(endDate, newStartDate)) {
                 startDate = endDate;
             } else {
-                startDate = newDate;
+                startDate = newStartDate;
             }
             updated();
         }
-    }
-
-    public Calendar getStartDate() {
-        return startDate;
     }
 
     public Calendar getEndDate() {
@@ -74,7 +71,7 @@ public class TravelClaim extends FModel<FView> {
         if (!endDate.equals(newEndDate) && mayBeEdited()) {
 
             // Not possible for end date to be less than start date
-            if (calLessThan(newEndDate, startDate)) {
+            if (Utilities.calLessThan(newEndDate, startDate)) {
                 endDate = startDate;
             } else {
                 endDate = newEndDate;
@@ -83,7 +80,11 @@ public class TravelClaim extends FModel<FView> {
         }
     }
 
-    public void setState(State newState) {
+    public TravelClaimState getState() {
+        return currentState;
+    }
+
+    public void setState(TravelClaimState newState) {
         if (isValidStateChange(newState)) {
             currentState = newState;
 
@@ -92,19 +93,23 @@ public class TravelClaim extends FModel<FView> {
         }
     }
 
-    public boolean isValidStateChange(State newState) {
+    public boolean isValidStateChange(TravelClaimState newState) {
         switch (currentState) {
         case IN_PROGRESS:
             // Should fall through
         case RETURNED:
-            return newState == State.SUBMITTED;
+            return newState == TravelClaimState.SUBMITTED;
 
         case SUBMITTED:
-            return newState == State.APPROVED || newState == State.RETURNED;
+            return newState == TravelClaimState.APPROVED || newState == TravelClaimState.RETURNED;
 
         default:
             return false;
         }
+    }
+
+    public boolean mayBeEdited() {
+        return (currentState == TravelClaimState.IN_PROGRESS || currentState == TravelClaimState.RETURNED);
     }
 
     public void createExpense() {
@@ -113,7 +118,7 @@ public class TravelClaim extends FModel<FView> {
     }
 
     // They will be sorted by date
-    public ArrayList<TravelExpense> getAllExpenses() {
+    public List<TravelExpense> getAllExpenses() {
         return allExpenses;
     }
 
@@ -126,26 +131,14 @@ public class TravelClaim extends FModel<FView> {
         updated();
     }
 
-    public State getState() {
-        return currentState;
-    }
-
-    public boolean mayBeEdited() {
-        return (currentState == State.IN_PROGRESS || currentState == State.RETURNED);
-    }
-
     private void updated() {
         TravelClaimOwner owner = TravelApplication.getMainOwner();
         owner.dataHasBeenUpdated();
         notifyViews();
     }
 
-    private boolean calLessThan(Calendar n1, Calendar n2) {
-        return n1.getTimeInMillis() < n2.getTimeInMillis();
-    }
-
-    public ArrayList<Pair<String, Float>> getCurrencyInformation() {
-        ArrayList<Pair<String, Float>> allPayments = new ArrayList<Pair<String, Float>>();
+    public List<Pair<String, Float>> getCurrencyInformation() {
+        List<Pair<String, Float>> allPayments = new ArrayList<Pair<String, Float>>();
         for (TravelExpense expense : allExpenses) {
             allPayments.add(new Pair<String, Float>(expense.getCurrency().getCurrencyCode(), expense.getAmount()));
         }

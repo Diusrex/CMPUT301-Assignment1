@@ -1,7 +1,7 @@
 package com.example.assignment1;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -36,6 +36,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
 
     private TextView currentStatus;
 
+    private EditText name;
     private EditText description;
 
     private TextView startDateText;
@@ -48,23 +49,6 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     private TravelExpenseArrayAdapter expenseAdapter;
 
     private Menu menu;
-
-    private TextWatcher descriptionTextWatcher = new TextWatcher() {
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            controller.setDescription(s.toString());
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +71,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         findButtons();
         findTextBoxes();
         setUpDescriptionTextBox();
+        setUpNameTextBox();
         setUpExpensesList();
     }
 
@@ -112,10 +97,45 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     private void setUpDescriptionTextBox() {
         description = (EditText) findViewById(R.id.description);
 
-        description.addTextChangedListener(descriptionTextWatcher);
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                controller.setDescription(s.toString());
+            }
+        });
 
         // Save it so that it can be restored later
         description.setTag(description.getKeyListener());
+    }
+
+    private void setUpNameTextBox() {
+        name = (EditText) findViewById(R.id.name);
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                controller.setName(s.toString());
+            }
+        });
+
+        // Save it so that it can be restored later
+        name.setTag(name.getKeyListener());
     }
 
     private void setUpExpensesList() {
@@ -141,6 +161,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
 
         updateStatus(model);
         updateDates(model);
+        updateName(model);
         updateDescription(model);
         updateStatesMenuBar(model);
         updateTravelExpenseList(model);
@@ -148,6 +169,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
 
     private void enableEditing() {
         description.setKeyListener((KeyListener) description.getTag());
+        name.setKeyListener((KeyListener) name.getTag());
         startDateButton.setEnabled(true);
         endDateButton.setEnabled(true);
         createExpenseButton.setEnabled(true);
@@ -156,6 +178,7 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
 
     private void disableEditing() {
         description.setKeyListener(null);
+        name.setKeyListener(null);
         startDateButton.setEnabled(false);
         endDateButton.setEnabled(false);
         createExpenseButton.setEnabled(false);
@@ -190,12 +213,21 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         }
     }
 
+    private void updateName(TravelClaim model) {
+        String newText = model.getName();
+
+        // This way, it will keep the position in the edit text
+        if (!newText.equals(name.getText().toString())) {
+            name.setText(newText);
+        }
+    }
+
     private void updateDescription(TravelClaim model) {
         String newText = model.getDescription();
 
         // This way, it will keep the position in the edit text
         if (!newText.equals(description.getText().toString())) {
-            description.setText(model.getDescription());
+            description.setText(newText);
         }
 
     }
@@ -204,13 +236,13 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         if (menu == null)
             return;
 
-        boolean shouldShowSubmit = model.isValidStateChange(TravelClaim.State.SUBMITTED);
+        boolean shouldShowSubmit = model.isValidStateChange(TravelClaimState.SUBMITTED);
         menu.findItem(R.id.submit).setVisible(shouldShowSubmit);
 
-        boolean shouldShowReturned = model.isValidStateChange(TravelClaim.State.RETURNED);
+        boolean shouldShowReturned = model.isValidStateChange(TravelClaimState.RETURNED);
         menu.findItem(R.id.returned).setVisible(shouldShowReturned);
 
-        boolean shouldShowApproved = model.isValidStateChange(TravelClaim.State.APPROVED);
+        boolean shouldShowApproved = model.isValidStateChange(TravelClaimState.APPROVED);
         menu.findItem(R.id.approved).setVisible(shouldShowApproved);
     }
 
@@ -249,13 +281,13 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         // Handle presses on the action bar items
         switch (item.getItemId()) {
         case R.id.submit:
-            controller.setState(TravelClaim.State.SUBMITTED);
+            controller.setState(TravelClaimState.SUBMITTED);
             return true;
         case R.id.returned:
-            controller.setState(TravelClaim.State.RETURNED);
+            controller.setState(TravelClaimState.RETURNED);
             return true;
         case R.id.approved:
-            controller.setState(TravelClaim.State.APPROVED);
+            controller.setState(TravelClaimState.APPROVED);
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -263,13 +295,13 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     }
 
     public void createEmail(View v) {
-        EmailSender sender = new EmailSender(this);
-        
+        AndroidEmailSender sender = new AndroidEmailSender(this);
+
         sender.sendEmail(controller.getTravelClaim());
     }
 
     public void displayCurrency(View v) {
-        ArrayList<Pair<String, Float>> mergedPayments = controller.getCurrencyInformation();
+        List<Pair<String, Float>> mergedPayments = controller.getCurrencyInformation();
         DisplayCurrencyUsageInfoDialogFragment dialogFragment = DisplayCurrencyUsageInfoDialogFragment
                 .newInstance(mergedPayments);
         displayDialogFragment(dialogFragment);

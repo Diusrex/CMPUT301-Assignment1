@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +24,7 @@ public class TravelClaimArrayAdapter extends ArrayAdapter<TravelClaim> {
     // Using a ViewHolder:
     // http://stackoverflow.com/a/21501329/2648858 on Feb 1, 2015
     static class TravelExpenseViewHolder {
-        TextView description;
+        TextView name;
         TextView startDate;
         TextView endDate;
         TextView status;
@@ -64,7 +63,7 @@ public class TravelClaimArrayAdapter extends ArrayAdapter<TravelClaim> {
             convertView = inflater.inflate(R.layout.row_travel_claim, parent, false);
 
             holder = new TravelExpenseViewHolder();
-            holder.description = (TextView) convertView.findViewById(R.id.description);
+            holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.startDate = (TextView) convertView.findViewById(R.id.start_date_text);
             holder.endDate = (TextView) convertView.findViewById(R.id.end_date_text);
             holder.status = (TextView) convertView.findViewById(R.id.status);
@@ -79,7 +78,7 @@ public class TravelClaimArrayAdapter extends ArrayAdapter<TravelClaim> {
 
         
         TravelClaim currentClaim = allClaims.get(position);
-        holder.description.setText(currentClaim.getDescription());
+        holder.name.setText(currentClaim.getName());
         holder.status.setText(currentClaim.getState().toString());
         
         holder.startDate.setText(Utilities.getFormattedDateString(context, 

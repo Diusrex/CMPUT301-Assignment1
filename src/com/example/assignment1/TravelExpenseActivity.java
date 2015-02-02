@@ -207,7 +207,6 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
 
     @Override
     public void update(TravelExpense model) {
-        // TODO Auto-generated method stub
         date = model.getDate();
 
         updateDescription(model);
