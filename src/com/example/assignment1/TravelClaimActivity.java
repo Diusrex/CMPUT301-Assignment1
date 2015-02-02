@@ -254,13 +254,13 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
     }
 
     @Override
-    public void deleteExpense(int position) {
-        controller.deleteExpense(position);
+    public void deleteExpense(TravelExpense expense) {
+        controller.deleteExpense(expense);
 
     }
 
     @Override
-    public void editExpense(int position) {
+    public void editExpense(TravelExpense expensen) {
         // TODO Auto-generated method stub
 
     }

@@ -112,11 +112,9 @@ public class TravelClaim extends FModel<FView> {
         return allExpenses;
     }
 
-    public void deleteExpense(int position) {
-        if (position >= 0 && position < allExpenses.size()) {
-            allExpenses.remove(position);
-            updated();
-        }
+    public void deleteExpense(TravelExpense expense) {
+        allExpenses.remove(expense);
+        updated();
     }
 
     public State getState() {

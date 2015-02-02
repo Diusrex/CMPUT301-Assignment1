@@ -98,7 +98,7 @@ public class TravelExpenseArrayAdapter extends ArrayAdapter<TravelExpense> {
         holder.deleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                listener.deleteExpense(position);
+                listener.deleteExpense(allExpenses.get(position));
             }
         });
         holder.deleteButton.setEnabled(true);
@@ -106,7 +106,7 @@ public class TravelExpenseArrayAdapter extends ArrayAdapter<TravelExpense> {
         holder.editButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.editExpense(position);
+                listener.editExpense(allExpenses.get(position));
             }
         });
         holder.editButton.setEnabled(true);

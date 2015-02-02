@@ -45,8 +45,8 @@ public class TravelClaimController {
         
     }
 
-    public void deleteExpense(int position) {
-        claim.deleteExpense(position);
+    public void deleteExpense(TravelExpense expense) {
+        claim.deleteExpense(expense);
         
     }
 
