@@ -10,6 +10,8 @@ import android.content.Context;
 import android.util.Pair;
 
 public final class Utilities {
+    private static final float epsilon = 0.001f;
+
     private Utilities() {
         
     }
@@ -54,5 +56,9 @@ public final class Utilities {
     public static String getFormattedDateString(Context context, int stringId, Calendar date) {
         String dateOutput = DateFormat.getDateInstance().format(date.getTime());
         return context.getResources().getString(stringId, dateOutput);
+    }
+    
+    public static boolean floatsAreDifferent(float f1, float f2) {
+        return (Math.abs(f1 - f2) > epsilon);
     }
 }
