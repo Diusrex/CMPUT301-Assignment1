@@ -25,8 +25,7 @@ import com.example.assignment1.TravelExpense.Category;
 import com.example.assignment1.dialogs.ChangeDateDialogFragment;
 import com.example.assignment1.dialogs.ChangeDateListener;
 
-public class TravelExpenseActivity extends Activity implements FView<TravelExpense>, ChangeDateListener,
-        OnItemSelectedListener {
+public class TravelExpenseActivity extends Activity implements FView<TravelExpense>, ChangeDateListener {
     private static final int DATE_ID = 0;
     public static final String ARGUMENT_CLAIM_POSITION = "ClaimPosition";
     public static final String ARGUMENT_EXPENSE_POSITION = "ExpensePosition";
@@ -250,17 +249,5 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
     @Override
     public void dateChanged(Calendar newDate, int dateId) {
         controller.setDate(newDate);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
-
     }
 }
