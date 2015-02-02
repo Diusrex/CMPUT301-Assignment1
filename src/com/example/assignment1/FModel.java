@@ -2,6 +2,7 @@ package com.example.assignment1;
 
 import java.util.ArrayList;
 
+@SuppressWarnings("rawtypes")
 public class FModel<V extends FView> {
     private transient ArrayList<V> views;
 
@@ -19,6 +20,7 @@ public class FModel<V extends FView> {
         views.remove(view);
     }
 
+    @SuppressWarnings("unchecked")
     public void notifyViews() {
         for (V view : views) {
             view.update(this);

@@ -13,7 +13,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/status"
-        android:lines="1" />
+        android:lines="1"
+        android:ellipsize="end" />
 
     <TextView
         android:id="@+id/start_date_text"
