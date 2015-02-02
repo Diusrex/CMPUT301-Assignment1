@@ -16,7 +16,7 @@ CMPUT301 Assignment1
    limitations under the License.
 
 
-This is my app for the first assignment.
+This is my app for the first assignment. I have two separate UML diagrams: one shows just the 'core' of the my application, while the other includes all of the classes.
 
 All code that I found from others has the link at the beginning of the block.
 
