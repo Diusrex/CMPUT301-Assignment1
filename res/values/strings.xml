@@ -18,4 +18,5 @@
     <string name="date" formatted="true">%s</string>
     <string name="new_claim">Create New Claim</string>
     <string name="new_expense">New Expense</string>
+    <string name="create_email">Create Email</string>
 </resources>

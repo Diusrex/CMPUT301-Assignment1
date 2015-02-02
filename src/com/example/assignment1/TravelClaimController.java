@@ -68,4 +68,8 @@ public class TravelClaimController {
         return claim.getExpensePosition(expense);
     }
 
+    public TravelClaim getTravelClaim() {
+        return claim;
+    }
+
 }

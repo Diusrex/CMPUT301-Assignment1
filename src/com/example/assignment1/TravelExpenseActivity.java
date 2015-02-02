@@ -45,7 +45,7 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
 
     private Spinner categorySpinner;
     private ArrayAdapter<TravelExpense.Category> categoryAdapter;
-    
+
     private TextWatcher descriptionTextWatcher = new TextWatcher() {
 
         @Override
@@ -234,7 +234,7 @@ public class TravelExpenseActivity extends Activity implements FView<TravelExpen
     private void updateSpinners(TravelExpense model) {
         int currencyPos = currencyAdapter.getPosition(model.getCurrency());
         currencySpinner.setSelection(currencyPos);
-        
+
         int categoryPos = categoryAdapter.getPosition(model.getCategory());
         categorySpinner.setSelection(categoryPos);
     }

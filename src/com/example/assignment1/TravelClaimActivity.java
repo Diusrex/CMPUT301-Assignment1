@@ -262,6 +262,12 @@ public class TravelClaimActivity extends Activity implements FView<TravelClaim>,
         }
     }
 
+    public void createEmail(View v) {
+        EmailSender sender = new EmailSender(this);
+        
+        sender.sendEmail(controller.getTravelClaim());
+    }
+
     public void displayCurrency(View v) {
         ArrayList<Pair<String, Float>> mergedPayments = controller.getCurrencyInformation();
         DisplayCurrencyUsageInfoDialogFragment dialogFragment = DisplayCurrencyUsageInfoDialogFragment
